@@ -3,13 +3,14 @@ const webpack = require('webpack')
 const merge = require('webpack-merge')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin')
+const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 const baseConfig = require('./webpack.base.conf')
 
 module.exports = merge(baseConfig, {
     mode: 'production',
     devtool: 'source-map',
     entry: {
-        app: './src/app.js'
+        app: './src/entry-client.js'
     },
     output: {
         filename: 'static/js/[name].[chunkhash:8].js',
@@ -51,10 +52,6 @@ module.exports = merge(baseConfig, {
     plugins: [
         new webpack.HashedModuleIdsPlugin(),
         new webpack.optimize.ModuleConcatenationPlugin(),
-        new HtmlWebpackPlugin({
-            inject: true,
-            filename: 'index.html',
-            template: path.resolve(__dirname, '../src/index.template.html')
-        })
+        new VueSSRClientPlugin()
     ]
 })

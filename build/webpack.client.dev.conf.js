@@ -3,13 +3,14 @@ const webpack = require('webpack')
 const merge = require('webpack-merge')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const WebpackBar = require('webpackbar')
+const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 const baseConfig = require('./webpack.base.conf')
 
 module.exports = merge(baseConfig, {
     mode: 'development',
     devtool: 'cheap-module-source-map',
     entry: {
-        app: './src/app.js'
+        app: './src/entry-client.js'
     },
     output: {
         filename: 'static/js/[name].js',
@@ -20,11 +21,7 @@ module.exports = merge(baseConfig, {
     plugins: [
         new WebpackBar(),
         new webpack.HotModuleReplacementPlugin(),
-        new HtmlWebpackPlugin({
-            inject: true,
-            filename: 'index.html',
-            template: path.resolve(__dirname, '../src/index.template.html')
-        })
+        new VueSSRClientPlugin()
     ],
     devServer: {
         contentBase: path.resolve(__dirname, '../public'),

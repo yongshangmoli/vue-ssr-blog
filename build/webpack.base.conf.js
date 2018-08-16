@@ -1,3 +1,4 @@
+const webpack = require('webpack')
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
@@ -31,6 +32,23 @@ module.exports = {
                         options: {
                             sourceMap: true
                         }
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            ident: 'postcss',
+                            plugins: () => [
+                                require('autoprefixer')({
+                                    flexbox: 'no-2009',
+                                    browsers: [
+                                        '>1%',
+                                        "last 4 versions",
+                                        'Firefox ESR',
+                                        'not ie < 9'
+                                    ]
+                                })
+                            ]
+                        }
                     }
                 ]
             },
@@ -42,6 +60,23 @@ module.exports = {
                         loader: 'css-loader',
                         options: {
                             sourceMap: true
+                        }
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            ident: 'postcss',
+                            plugins: () => [
+                                require('autoprefixer')({
+                                    flexbox: 'no-2009',
+                                    browsers: [
+                                        '>1%',
+                                        "last 4 versions",
+                                        'Firefox ESR',
+                                        'not ie < 9'
+                                    ]
+                                })
+                            ]
                         }
                     },
                     {
@@ -87,15 +122,20 @@ module.exports = {
             })
         ]
     },
-    plugins: isProd
-        ? [
-            new MiniCssExtractPlugin({
-                filename: 'static/css/[name].[contenthash:8].css',
-                chunkFilename: 'static/css/[name].[contenthash:8].css'
-            }),
-            new VueLoaderPlugin()
-        ]
-        : [
-            new VueLoaderPlugin()
-        ]
+    plugins: [
+        new VueLoaderPlugin(),
+        new webpack.DefinePlugin({
+            isServer: 'false',
+            isClient: 'true'
+        })
+    ].concat(
+        isProd
+            ? [
+                new MiniCssExtractPlugin({
+                    filename: 'static/css/[name].[contenthash:8].css',
+                    chunkFilename: 'static/css/[name].[contenthash:8].css'
+                })
+            ]
+            : []
+    )
 }
