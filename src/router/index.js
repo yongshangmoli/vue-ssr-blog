@@ -1,9 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Home from '../views/home'
-import About from '../views/about'
-
 Vue.use(VueRouter)
 
 export function createRouter() {
@@ -12,13 +9,11 @@ export function createRouter() {
         routes: [
             {
                 path: '/',
-                // component: () => import('../views/home')
-                component: Home
+                component: () => import('../views/home')
             },
             {
                 path: '/about',
-                // component: () => import('../views/about')
-                component: About
+                component: () => import('../views/about')
             }
         ]
     })

@@ -1,12 +1,8 @@
 const path = require('path')
 const webpack = require('webpack')
-const merge = require('webpack-merge')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const WebpackBar = require('webpackbar')
-const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
-const baseConfig = require('./webpack.base.conf')
 
-module.exports = merge(baseConfig, {
+module.exports = {
     mode: 'development',
     devtool: 'cheap-module-source-map',
     entry: {
@@ -14,14 +10,11 @@ module.exports = merge(baseConfig, {
     },
     output: {
         filename: 'static/js/[name].js',
-        path: path.resolve(__dirname, '../dist'),
-        chunkFilename: 'static/js/[name].js',
-        publicPath: '/'
+        chunkFilename: 'static/js/[name].js'
     },
     plugins: [
         new WebpackBar(),
-        new webpack.HotModuleReplacementPlugin(),
-        new VueSSRClientPlugin()
+        new webpack.HotModuleReplacementPlugin()
     ],
     devServer: {
         contentBase: path.resolve(__dirname, '../public'),
@@ -41,4 +34,4 @@ module.exports = merge(baseConfig, {
         },
         inline: true
     }
-})
+}
