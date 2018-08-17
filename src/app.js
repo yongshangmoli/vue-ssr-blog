@@ -3,9 +3,6 @@ import { sync } from 'vuex-router-sync'
 import { createRouter } from './router'
 import { createStore } from './store'
 import App from './app.vue'
-import titleMixin from './utils/title'
-
-Vue.mixin(titleMixin)
 
 export function createApp() {
     const router = createRouter()

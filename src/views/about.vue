@@ -8,7 +8,17 @@
 <script>
     export default {
         name: 'about',
-        title: 'about',
+        metaInfo: {
+            title: 'about',
+            meta: [
+                {
+                    'property': 'og:title',
+                    'content': 'Test title',
+                    'template': chunk => `${chunk} - My page`, //or as string template: '%s - My page',
+                    'vmid': 'og:title'
+                }
+            ]
+        },
         data() {
             return {
                 message: 'test'

@@ -56,7 +56,6 @@ const render = (req, res) => {
     }
 
     const context = {
-        title: 'vue ssr',
         url: req.url
     }
 

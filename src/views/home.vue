@@ -14,7 +14,12 @@
         asyncData({ store, route }) {
             return store.dispatch('getList')
         },
-        title: 'home',
+        metaInfo: {
+            title: 'home',
+            meta: [
+                { name: 'apple-mobile-web-app-capable', content: 'yes' }
+            ]
+        },
         methods: {
             clickHandle() {
                 const num = Math.random()

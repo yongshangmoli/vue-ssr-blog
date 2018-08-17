@@ -13,6 +13,10 @@
 <script>
     export default {
         name: 'app',
+        metaInfo: {
+            title: 'default title',
+            titleTemplate: '%s - vue ssr'
+        },
         data() {
             return {
                 message: 'vue'

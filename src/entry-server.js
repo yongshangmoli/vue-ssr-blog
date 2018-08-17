@@ -5,6 +5,7 @@ export default context => {
         const { app, router, store } = createApp()
 
         router.push(context.url)
+        context.meta = app.$meta()
 
         router.onReady(() => {
             const matchedComponents = router.getMatchedComponents()
