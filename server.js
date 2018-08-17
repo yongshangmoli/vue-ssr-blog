@@ -19,17 +19,24 @@ function createRenderer(bundle, options) {
     })
 }
 
-app.use(express.static(path.resolve(__dirname, 'dist')))
-
 let renderer
+let readyPromise
 const templatePath = path.resolve(__dirname, './src/index.template.html')
+const template = fs.readFileSync(templatePath, 'utf-8')
+
 if (isProd) {
     const serverBundle = require('./dist/vue-ssr-server-bundle')
     const clientManifest = require('./dist/vue-ssr-client-manifest')
-    const template = fs.readFileSync(templatePath, 'utf-8')
     renderer = createRenderer(serverBundle, {
         template,
         clientManifest
+    })
+} else {
+    readyPromise = require('./build/setup-dev-server')(app, (serverBundle, clientManifest) => {
+        renderer = createRenderer(serverBundle, {
+            template,
+            clientManifest
+        })
     })
 }
 
@@ -62,7 +69,12 @@ const render = (req, res) => {
     })
 }
 
-app.get('*', isProd ? render : render)
+app.use(express.static(path.resolve(__dirname, 'dist')))
+app.use(express.static(path.resolve(__dirname, 'public')))
+
+app.get('*', isProd ? render : (req, res) => {
+    readyPromise.then(() => render(req, res))
+})
 
 app.use((req, res, next) => {
     const err = new Error(`${req.originalUrl} not found`)
@@ -74,4 +86,5 @@ app.use((err, req, res, next) => {
     res.status(err.status || 500).send(err.message)
 })
 
-app.listen(3000, () => console.log('server running on http://localhost:3000'))
+const port = process.env.PORT || 3000
+app.listen(port, () => console.log(`server running on http://localhost:${port}`))

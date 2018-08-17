@@ -10,6 +10,9 @@ const prodConfig = require('./webpack.client.prod.conf')
 const isProd = process.env.NODE_ENV === 'production'
 
 const config = {
+    entry: {
+        app: './src/entry-client.js'
+    },
     optimization: {
         minimizer: [
             new OptimizeCssAssetsPlugin({

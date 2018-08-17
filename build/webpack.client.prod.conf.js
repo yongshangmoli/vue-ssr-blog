@@ -4,9 +4,6 @@ const UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin')
 module.exports = {
     mode: 'production',
     devtool: 'source-map',
-    entry: {
-        app: './src/entry-client.js'
-    },
     output: {
         filename: 'static/js/[name].[chunkhash:8].js',
         chunkFilename: 'static/js/[name].[chunkhash:8].js'
