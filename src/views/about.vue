@@ -14,7 +14,7 @@
                 {
                     'property': 'og:title',
                     'content': 'Test title',
-                    'template': chunk => `${chunk} - My page`, //or as string template: '%s - My page',
+                    'template': chunk => `${chunk} - My page`,
                     'vmid': 'og:title'
                 }
             ]

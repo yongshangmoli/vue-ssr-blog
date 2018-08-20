@@ -11,11 +11,11 @@ export function createRouter() {
         routes: [
             {
                 path: '/',
-                component: () => import('../views/home')
+                component: () => import(/* webpackChunkName: 'page-home' */ '../views/home')
             },
             {
                 path: '/about',
-                component: () => import('../views/about')
+                component: () => import(/* webpackChunkName: 'page-about' */ '../views/about')
             }
         ]
     })

@@ -43,12 +43,13 @@ const config = {
                                     flexbox: 'no-2009',
                                     browsers: [
                                         '>1%',
-                                        "last 4 versions",
+                                        'last 4 versions',
                                         'Firefox ESR',
                                         'not ie < 9'
                                     ]
                                 })
-                            ]
+                            ],
+                            sourceMap: true
                         }
                     }
                 ]
@@ -72,12 +73,13 @@ const config = {
                                     flexbox: 'no-2009',
                                     browsers: [
                                         '>1%',
-                                        "last 4 versions",
+                                        'last 4 versions',
                                         'Firefox ESR',
                                         'not ie < 9'
                                     ]
                                 })
-                            ]
+                            ],
+                            sourceMap: true
                         }
                     },
                     {

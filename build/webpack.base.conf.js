@@ -1,10 +1,12 @@
 const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
+const resolve = pathname => path.resolve(__dirname, '..', pathname)
+
 module.exports = {
-    context: path.resolve(__dirname, '..'),
+    context: resolve('.'),
     output: {
-        path: path.resolve(__dirname, '../dist'),
+        path: resolve('dist'),
         publicPath: '/'
     },
     resolve: {
@@ -13,14 +15,20 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.(js|vue)$/,
+                loader: 'eslint-loader',
+                include: resolve('src'),
+                enforce: 'pre'
+            },
+            {
                 test: /\.vue$/,
                 loader: 'vue-loader',
-                include: path.resolve(__dirname, '../src')
+                include: resolve('src')
             },
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
-                exclude: path.resolve(__dirname, '../node_modules')
+                exclude: resolve('node_modules')
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -34,8 +42,8 @@ module.exports = {
                 test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
                 loader: 'url-loader',
                 options: {
-                limit: 10000,
-                name: 'static/media/[name].[hash:7].[ext]'
+                    limit: 10000,
+                    name: 'static/media/[name].[hash:7].[ext]'
                 }
             },
             {

@@ -10,7 +10,7 @@ export default context => {
         router.onReady(() => {
             const matchedComponents = router.getMatchedComponents()
             if (!matchedComponents.length) {
-                return reject({ code: 404 })
+                return reject({ code: 404 }) // eslint-disable-line
             }
 
             Promise.all(matchedComponents.map(Component => {

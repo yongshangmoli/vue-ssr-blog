@@ -8,6 +8,9 @@ module.exports = {
         filename: 'static/js/[name].[chunkhash:8].js',
         chunkFilename: 'static/js/[name].[chunkhash:8].js'
     },
+    resolve: {
+        mainFields: ['jsnext:main', 'browser', 'main']
+    },
     optimization: {
         runtimeChunk: {
             name: 'manifest'
