@@ -15,6 +15,9 @@ const config = {
     },
     optimization: {
         minimizer: [
+            // 对css进行压缩和优化
+            // paeser属性postcss-safe-parser使用查找并修复 CSS 语法错误
+            // map: { inline: false }配合css的sourceMap生成css source map，inline为false表示source map打包成单独的文件
             new OptimizeCssAssetsPlugin({
                 cssProcessorOptions: isProd
                     ? { parser: require('postcss-safe-parser'), map: { inline: false } }

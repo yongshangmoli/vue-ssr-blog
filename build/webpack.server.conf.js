@@ -13,13 +13,16 @@ module.exports = merge(baseConfig, {
     },
     output: {
         filename: 'server.bundle.js',
+        // 使用module.exports的方式导出模块
         libraryTarget: 'commonjs2'
     },
+    // 防止某些import的模块打包进bundle中，因为serverBundle运行在服务端，可以直接require，提升打包效率
     externals: [nodeExternals()],
     module: {
         rules: [
             {
                 test: /\.(css|styl|stylus)$/,
+                // 服务端不处理css
                 loader: 'ignore-loader'
             }
         ]

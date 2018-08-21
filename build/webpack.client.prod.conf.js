@@ -9,6 +9,7 @@ module.exports = {
         chunkFilename: 'static/js/[name].[chunkhash:8].js'
     },
     resolve: {
+        // Tree Shaking依赖于es6的静态语法分析，优先从package.json的jsnext:main字段导入es6模块(如果有的话)
         mainFields: ['jsnext:main', 'browser', 'main']
     },
     optimization: {
@@ -43,7 +44,6 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.HashedModuleIdsPlugin(),
-        new webpack.optimize.ModuleConcatenationPlugin()
+        new webpack.HashedModuleIdsPlugin()
     ]
 }

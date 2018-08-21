@@ -15,9 +15,7 @@ module.exports = function setupDevServer(app, cb) {
     let clientManifest
 
     let ready
-    const readyPromise = new Promise(resolve => {
-        ready = resolve
-    })
+    const readyPromise = new Promise(resolve => (ready = resolve))
 
     const update = () => {
         if (serverBundle && clientManifest) {
@@ -26,6 +24,7 @@ module.exports = function setupDevServer(app, cb) {
         }
     }
 
+    // 注入hot reload代理客户端
     clientConfig.entry.app = ['webpack-hot-middleware/client?reload=true', clientConfig.entry.app]
     const clientCompiler = webpack(clientConfig)
     const devMiddleware = require('webpack-dev-middleware')(clientCompiler, {
@@ -45,8 +44,10 @@ module.exports = function setupDevServer(app, cb) {
         update()
     })
 
+    // 面向内存的文件系统
     const mfs = new MFS()
     const serverComplier = webpack(serverConfig)
+    // 把webpack的文件系统设置为mfs，把输出内容打包到内存
     serverComplier.outputFileSystem = mfs
     serverComplier.watch({}, (err, stats) => {
         if (err) throw err

@@ -4,6 +4,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const resolve = pathname => path.resolve(__dirname, '..', pathname)
 
 module.exports = {
+    // 设置webpack的上下文目录，使用相对路径时会以此目录为根目录
     context: resolve('.'),
     output: {
         path: resolve('dist'),
@@ -18,6 +19,7 @@ module.exports = {
                 test: /\.(js|vue)$/,
                 loader: 'eslint-loader',
                 include: resolve('src'),
+                // 指定该loader执行顺序为最前
                 enforce: 'pre'
             },
             {
@@ -57,6 +59,7 @@ module.exports = {
         ]
     },
     plugins: [
+        // 自动应用loader到.vue文件对应，如/\.js$/对应script块，/\.css$/对应style块
         new VueLoaderPlugin()
     ]
 }
