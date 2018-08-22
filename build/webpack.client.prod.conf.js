@@ -1,5 +1,9 @@
 const webpack = require('webpack')
 const UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
+const seen = new Set()
+const nameLength = 4
 
 module.exports = {
     mode: 'production',
@@ -44,6 +48,27 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.HashedModuleIdsPlugin()
+        new webpack.HashedModuleIdsPlugin(),
+        new MiniCssExtractPlugin({
+            filename: 'static/css/[name].[contenthash:8].css',
+            chunkFilename: 'static/css/[name].[contenthash:8].css'
+        }),
+        new webpack.NamedChunksPlugin(chunk => {
+            if (chunk.name) {
+                return chunk.name
+            }
+
+            const modules = Array.from(chunk.modulesIterable)
+            if (modules.length > 1) {
+                const hash = require('hash-sum')
+                const joinedHash = hash(modules.map(m => m.id).join('-'))
+                let len = nameLength
+                while (seen.has(joinedHash.substr(0, len))) len++
+                seen.add(joinedHash.substr(0, len))
+                return `chunk-${joinedHash.substr(0, len)}`
+            } else {
+                return modules[0].id
+            }
+        })
     ]
 }

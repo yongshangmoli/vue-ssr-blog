@@ -101,16 +101,7 @@ const config = {
             isClient: 'true'
         }),
         new VueSSRClientPlugin()
-    ].concat(
-        isProd
-            ? [
-                new MiniCssExtractPlugin({
-                    filename: 'static/css/[name].[contenthash:8].css',
-                    chunkFilename: 'static/css/[name].[contenthash:8].css'
-                })
-            ]
-            : []
-    )
+    ]
 }
 
 module.exports = merge(baseConfig, isProd ? prodConfig : devConfig, config)
