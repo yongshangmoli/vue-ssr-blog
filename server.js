@@ -21,12 +21,16 @@ function createRenderer(bundle, options) {
 
 let renderer
 let readyPromise
+let asyncInjectAssets
+let publicPath
 const templatePath = path.resolve(__dirname, './src/index.template.html')
 const template = fs.readFileSync(templatePath, 'utf-8')
 
 if (isProd) {
     const serverBundle = require('./dist/vue-ssr-server-bundle')
     const clientManifest = require('./dist/vue-ssr-client-manifest')
+    asyncInjectAssets = clientManifest.asyncInjectAssets
+    publicPath = clientManifest.publicPath
     renderer = createRenderer(serverBundle, {
         template,
         clientManifest
@@ -62,6 +66,21 @@ const render = (req, res) => {
     renderer.renderToString(context, (err, html) => {
         if (err) {
             return handleError(err)
+        }
+
+        if (isProd && asyncInjectAssets && context.files) {
+            const set = new Set()
+            context.files.forEach(filename => {
+                const cssAssets = asyncInjectAssets[filename]
+                set.add(...cssAssets)
+            })
+
+            const asyncCss = []
+            for (let css of set) {
+                const link = `<link rel="stylesheet" href="${publicPath}${css}">`
+                asyncCss.push(link)
+            }
+            html = html.replace(/(<\/head>)/, `${asyncCss.join('')}$1`)
         }
 
         res.send(html)

@@ -15,7 +15,7 @@ export function createRouter() {
             },
             {
                 path: '/about',
-                component: () => import('../views/about')
+                component: () => import(/* webpackChunkName: 'page-about' */ '../views/about')
             }
         ]
     })

@@ -4,7 +4,6 @@ export default context => {
     return new Promise((resolve, reject) => {
         const { app, router, store } = createApp()
 
-        // 设置服务器端 router 的位置
         router.push(context.url)
         context.meta = app.$meta()
 
@@ -15,7 +14,10 @@ export default context => {
                 return reject({ code: 404 }) // eslint-disable-line
             }
 
+            // 记录matchedComponents中对应.vue文件
+            context.files = []
             Promise.all(matchedComponents.map(Component => {
+                context.files.push(Component.__file)
                 if (Component.asyncData) {
                     return Component.asyncData({
                         store,
