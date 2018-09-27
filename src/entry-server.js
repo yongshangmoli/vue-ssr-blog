@@ -1,4 +1,5 @@
 import { createApp } from './app'
+import { createSSRApi } from './api'
 
 export default context => {
     return new Promise((resolve, reject) => {
@@ -16,6 +17,9 @@ export default context => {
 
             // 记录matchedComponents中对应.vue文件
             context.files = []
+            // 创建携带cookie的api
+            store.$api = store.state.$api = createSSRApi(context.cookie)
+
             Promise.all(matchedComponents.map(Component => {
                 context.files.push(Component.__file)
                 if (Component.asyncData) {

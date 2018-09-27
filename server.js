@@ -60,7 +60,8 @@ const render = (req, res) => {
     }
 
     const context = {
-        url: req.url
+        url: req.url,
+        cookie: req.headers.cookie
     }
 
     renderer.renderToString(context, (err, html) => {

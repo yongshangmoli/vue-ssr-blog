@@ -1,6 +1,7 @@
 import 'babel-polyfill'
 import Vue from 'vue'
 import { createApp } from './app'
+import api from './api'
 
 Vue.config.productionTip = false
 
@@ -8,6 +9,7 @@ const { app, router, store } = createApp()
 
 if (window.__INITIAL_STATE__) {
     store.replaceState(window.__INITIAL_STATE__)
+    store.$api = store.state.$api = api
 }
 
 Vue.mixin({
