@@ -12,7 +12,11 @@
     "asyncInjectAssets": "node build/asyncInjectAssets.js",
     "clear": "rimraf dist",
     "start": "cross-env NODE_ENV=production node server.js",
-    "lint": "eslint --ext .js,.vue src"
+    "lint": "eslint --ext .js,.vue src",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+      "src/**/*.{js,vue}": ["eslint --fix", "git add"]
   },
   "keywords": [],
   "author": "",
@@ -36,7 +40,9 @@
     "eslint-plugin-vue": "^5.0.0-beta.3",
     "file-loader": "^1.1.11",
     "hash-sum": "^1.0.2",
+    "husky": "^1.0.1",
     "ignore-loader": "^0.1.2",
+    "lint-staged": "^7.3.0",
     "memory-fs": "^0.4.1",
     "mini-css-extract-plugin": "^0.4.1",
     "optimize-css-assets-webpack-plugin": "^5.0.0",

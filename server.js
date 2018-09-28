@@ -70,18 +70,18 @@ const render = (req, res) => {
         }
 
         if (isProd && asyncInjectAssets && context.files) {
-            const set = new Set()
+            let asyncCss = []
             context.files.forEach(filename => {
                 const cssAssets = asyncInjectAssets[filename]
-                set.add(...cssAssets)
+                asyncCss.push(...cssAssets)
             })
 
-            const asyncCss = []
-            for (let css of set) {
-                const link = `<link rel="stylesheet" href="${publicPath}${css}">`
-                asyncCss.push(link)
+            asyncCss = new Set(asyncCss)
+            let link = ''
+            for (let css of asyncCss) {
+                link += `<link rel="stylesheet" href="${publicPath}${css}">`
             }
-            html = html.replace(/(<\/head>)/, `${asyncCss.join('')}$1`)
+            html = html.replace(/(<\/head>)/, `${link}$1`)
         }
 
         res.send(html)
