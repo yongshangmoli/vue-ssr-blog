@@ -7,6 +7,7 @@ const LRU = require('lru-cache')
 const app = express()
 
 const isProd = process.env.NODE_ENV === 'production'
+// const isProd = false
 
 function createRenderer(bundle, options) {
     return createBundleRenderer(bundle, {
