@@ -1,9 +1,13 @@
 import 'babel-polyfill'
 import Vue from 'vue'
+import ProgressBar from './components/progressBar'
 import { createApp } from './app'
 import api from './api'
 
 Vue.config.productionTip = false
+
+const bar = Vue.prototype.$bar = new Vue(ProgressBar).$mount()
+document.body.appendChild(bar.$el)
 
 const { app, router, store } = createApp()
 
@@ -42,6 +46,7 @@ router.onReady(() => {
             return next()
         }
 
+        bar.start()
         Promise.all(activated.map(c => {
             if (c.asyncData) {
                 return c.asyncData({
@@ -51,6 +56,7 @@ router.onReady(() => {
             }
         }))
             .then(() => {
+                bar.finish()
                 next()
             })
             .catch(next)
