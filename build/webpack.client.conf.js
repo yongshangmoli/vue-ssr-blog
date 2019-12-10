@@ -1,3 +1,9 @@
+/*
+ * @Author: shallwe
+ * @Date: 2019-12-10 11:48:33
+ * @LastEditTime: 2019-12-10 13:07:05
+ * @LastEditors: shallwe
+ */
 const merge = require('webpack-merge')
 const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
@@ -36,24 +42,6 @@ const config = {
                         options: {
                             sourceMap: true
                         }
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            ident: 'postcss',
-                            plugins: () => [
-                                require('autoprefixer')({
-                                    flexbox: 'no-2009',
-                                    browsers: [
-                                        '>1%',
-                                        'last 4 versions',
-                                        'Firefox ESR',
-                                        'not ie < 9'
-                                    ]
-                                })
-                            ],
-                            sourceMap: true
-                        }
                     }
                 ]
             },
@@ -64,24 +52,6 @@ const config = {
                     {
                         loader: 'css-loader',
                         options: {
-                            sourceMap: true
-                        }
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            ident: 'postcss',
-                            plugins: () => [
-                                require('autoprefixer')({
-                                    flexbox: 'no-2009',
-                                    browsers: [
-                                        '>1%',
-                                        'last 4 versions',
-                                        'Firefox ESR',
-                                        'not ie < 9'
-                                    ]
-                                })
-                            ],
                             sourceMap: true
                         }
                     },
