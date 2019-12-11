@@ -1,7 +1,7 @@
 /*
  * @Author: shallwe
  * @Date: 2019-12-10 11:48:33
- * @LastEditTime: 2019-12-10 13:07:05
+ * @LastEditTime: 2019-12-10 17:45:46
  * @LastEditors: shallwe
  */
 const merge = require('webpack-merge')
@@ -25,44 +25,72 @@ const config = {
             // paeser属性postcss-safe-parser使用查找并修复 CSS 语法错误
             // map: { inline: false }配合css的sourceMap生成css source map，inline为false表示source map打包成单独的文件
             new OptimizeCssAssetsPlugin({
-                cssProcessorOptions: isProd
-                    ? { parser: require('postcss-safe-parser'), map: { inline: false } }
-                    : { parser: require('postcss-safe-parser') }
+                cssProcessorOptions: isProd ? {
+                    parser: require('postcss-safe-parser'),
+                    map: {
+                        inline: false
+                    }
+                } : {
+                    parser: require('postcss-safe-parser')
+                }
             })
         ]
     },
     module: {
-        rules: [
-            {
-                test: /\.css$/,
-                use: [
-                    isProd ? MiniCssExtractPlugin.loader : 'vue-style-loader',
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            sourceMap: true
-                        }
+        rules: [{
+            test: /\.css$/,
+            use: [
+                isProd ? MiniCssExtractPlugin.loader : 'vue-style-loader',
+                {
+                    loader: 'css-loader',
+                    options: {
+                        sourceMap: true
                     }
-                ]
-            },
-            {
-                test: /\.styl(us)?$/,
-                use: [
-                    isProd ? MiniCssExtractPlugin.loader : 'vue-style-loader',
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            sourceMap: true
-                        }
-                    },
-                    {
-                        loader: 'stylus-loader',
-                        options: {
-                            sourceMap: true
-                        }
+                }
+            ]
+        },
+        {
+            test: /\.less?$/,
+            use: [
+                isProd ? MiniCssExtractPlugin.loader : 'vue-style-loader',
+                {
+                    loader: 'css-loader',
+                    options: {
+                        sourceMap: true
                     }
-                ]
-            }
+                },
+                {
+                    loader: 'less-loader',
+                    options: {
+                        sourceMap: true
+                    }
+                }
+            ]
+        },
+        {
+            test: /\.styl(us)?$/,
+            use: [
+                isProd ? MiniCssExtractPlugin.loader : 'vue-style-loader',
+                {
+                    loader: 'css-loader',
+                    options: {
+                        sourceMap: true
+                    }
+                },
+                {
+                    loader: 'less-loader',
+                    options: {
+                        sourceMap: true
+                    }
+                },
+                {
+                    loader: 'stylus-loader',
+                    options: {
+                        sourceMap: true
+                    }
+                }
+            ]
+        }
         ]
     },
     plugins: [

@@ -15,13 +15,13 @@ module.exports = {
     },
     module: {
         rules: [
-            {
-                test: /\.(js|vue)$/,
-                loader: 'eslint-loader',
-                include: resolve('src'),
-                // 指定该loader执行顺序为最前
-                enforce: 'pre'
-            },
+            // {
+            //     // test: /\.(js|vue)$/,
+            //     // loader: 'eslint-loader',
+            //     // include: resolve('src'),
+            //     // // 指定该loader执行顺序为最前
+            //     // enforce: 'pre'
+            // },
             {
                 test: /\.vue$/,
                 loader: 'vue-loader',
