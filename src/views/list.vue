@@ -1,51 +1,85 @@
 <!--
  * @Author: shallwe
  * @Date: 2019-11-06 15:17:42
- * @LastEditTime: 2019-12-11 11:48:04
+ * @LastEditTime: 2019-12-11 19:07:02
  * @LastEditors: shallwe
  -->
 <template>
-    <div class="wrapper">
-        <article
-            v-for="(item, idx) in blogList"
-            :key="idx"
-            :class="{ item: true, 'item-large': idx % 6 === 0 }"
-        >
-            <a
-                :href="redirectPrex + '?id=' + item._id"
-                :class="{ flex: idx % 6 === 0 }"
+    <div v-if="show" class="wrapper">
+        <div style="display: flex;">
+            <article
+                v-for="(item, idx) in blogList"
+                :key="idx"
+                :class="{ item: true, 'item-large': idx % 6 === 0 }"
             >
-                <div class="img-wrapper">
-                    <img
-                        :src="
-                            item.cover ||
-                                'https://source.unsplash.com/random/600x200'
-                        "
-                        alt="博客封面图"
-                        class="img"
-                    />
-                </div>
-                <div :class="[idx % 6 === 0 ? 'content-large' : 'content']">
-                    <span class="content-tag">{{
-                        item.classification.label
-                    }}</span>
-                    <h4 class="content-title">{{ item.title }}</h4>
-                    <div class="content-intro">{{ item.introduction }}</div>
-                    <p class="content-view">
-                        {{ item.pageviewsCount || 0 }}浏览
-                    </p>
-                </div>
-            </a>
-        </article>
+                <a
+                    :href="redirectPrex + '?id=' + item._id"
+                    :class="{ flex: idx % 6 === 0 }"
+                >
+                    <div class="img-wrapper">
+                        <img
+                            :src="
+                                item.cover ||
+                                    'https://source.unsplash.com/random/600x200'
+                            "
+                            alt="博客封面图"
+                            class="img"
+                        />
+                    </div>
+                    <div :class="[idx % 6 === 0 ? 'content-large' : 'content']">
+                        <span class="content-tag">{{
+                            item.classification.label
+                        }}</span>
+                        <h4 class="content-title">{{ item.title }}</h4>
+                        <div class="content-intro">{{ item.introduction }}</div>
+                        <p class="content-view">
+                            {{ item.pageviewsCount || 0 }}浏览
+                        </p>
+                    </div>
+                </a>
+            </article>
+        </div>
+        <el-pagination
+            class="pagination-large"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="pageInfo.page"
+            :page-size="pageInfo.pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="pageInfo.count"
+        >
+        </el-pagination>
+        <el-pagination
+            class="pagination-small"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="pageInfo.page"
+            :page-size="pageInfo.pageSize"
+            layout="prev, pager, next"
+            :total="pageInfo.count"
+        >
+        </el-pagination>
     </div>
 </template>
 
 <script>
     export default {
+        metaInfo() {
+            return {
+                title: '博客列表'
+            }
+        },
         data() {
             return {
+                show: false,
                 listType: '',
-                redirectPrex: '/detail/'
+                redirectPrex: '/detail/',
+                loading: '',
+                pageInfo: {
+                    page: 1,
+                    pageSize: 10,
+                    count: 0
+                }
             }
         },
         computed: {
@@ -54,54 +88,49 @@
             }
         },
         methods: {
-            getBlogData() {
-                try {
-                    // let { data } = await axios.get(`http://rap2api.taobao.org/app/mock/234367/example/1571736773079?id=${params.id}`)
-                    // data = data.data
-                    // console.log(11, context.data)
-                    const count = 10
-                    const template = {
-                        pageviewsCount: 5,
-                        url: 'javascript:;',
-                        title: '博客',
-                        classification: {
-                            label: '分类1',
-                            value: 'sdsds'
-                        },
-                        label: ['标签1'],
-                        introduction:
-                            '比如你可以听歌的同时，打开编辑器敲代码，编辑器和听歌软件的进程之间丝毫不会相互干扰。多线程：程序中包含多个执行流，即在一个程序中可以同时运行多个不同的线程来执行不同的任',
-                        cover:
-                            'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-                        createTime: '2019-10-20',
-                        updateTime: '',
-                        text:
-                            '<h1>一、线程与进程</h1><p>多进程：在同一个时间里，同一个计算机系统中如果允许两个或两个以上的进程处于运行状态。多进程带来的好处是明显的，比如你可以听歌的同时，打开编辑器敲代码，编辑器和听歌软件的进程之间丝毫不会相互干扰。多线程：程序中包含多个执行流，即在一个程序中可以同时运行多个不同的线程来执行不同的任务，也就是说允许单个程序创建多个并行执行的线程来完成各自的任务。</p>'
-                    }
-                    let blogList = []
-                    for (let i = 1; i < count; i++) {
-                        blogList.push(template)
-                    }
-                    // return {
-                    //     blogList
-                    // };
-                    this.blogList = blogList
-                } catch (error) {
-                    console.log(222, error)
-                }
+            getBlogList(success, fail) {
+                let { page, pageSize } = this.pageInfo
+                this.loading()
+                this.$store
+                    .dispatch('getBlogLists', {
+                        page,
+                        pageSize
+                    })
+                    .then(res => {
+                        this.loading().close()
+                        if (!res.code) {
+                            let data = res.data
+                            this.pageInfo.count = data.count
+                        }
+                        success && success(res)
+                    })
+                    .catch(err => {
+                        this.loading().close()
+                        fail && fail(err)
+                    })
+            },
+            handleSizeChange(pageSize) {
+                this.pageInfo.pageSize = pageSize
+                this.getBlogList()
+            },
+            handleCurrentChange(page) {
+                this.pageInfo.page = page
+                this.getBlogList()
             }
         },
         created() {
-            this.getBlogData()
+            this.loading = this.$loading
             let { type } = this.$route.query
             try {
+                // 不同类型列表
                 // if (type === 2) {
 
                 // } else if () {
 
                 // } else
-                // this.$store.dispatch('')
-                this.$store.dispatch('getBlogLists')
+                this.getBlogList(() => {
+                    this.show = true
+                })
             } catch (error) {}
         },
         validate({ params }) {
@@ -117,7 +146,6 @@
     margin: 0 auto;
     padding: 20px 10px;
     position: relative;
-    display: flex;
     flex-wrap: wrap;
 }
 .img-wrapper {
@@ -188,6 +216,14 @@
         color: #000;
     }
 }
+.pagination-large {
+    display: none;
+}
+.pagination-small {
+    display: block;
+    text-align: right;
+    margin: 0 20px 40px;
+}
 @media (min-width: 1024px) {
     .flex {
         display: flex;
@@ -206,6 +242,14 @@
             width: 357px;
             flex: unset;
         }
+    }
+    .pagination-large {
+        text-align: right;
+        margin: 0 20px 40px;
+        display: block;
+    }
+    .pagination-small {
+        display: none;
     }
 }
 </style>
