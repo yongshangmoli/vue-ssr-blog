@@ -11,14 +11,12 @@
         "sourceType": "module",
         "parser": "babel-eslint"
     },
-    "overrides": [
-        {
-            "files": ["*.vue"],
-            "rules": {
-                "indent": [0]
-            }
+    "overrides": [{
+        "files": ["*.vue"],
+        "rules": {
+            "indent": [0]
         }
-    ],
+    }],
     "rules": {
         "indent": [2, 4],
         "space-before-function-paren": [0],
@@ -30,11 +28,8 @@
             }
         ],
         "no-unused-vars": [1],
-        "camelcase": [
-            "error",
-            {
-                "allow": ["aa_bb"]
-            }
-        ]
+        "camelcase": [0, {
+            "properties": "never"
+        }]
     }
 }
