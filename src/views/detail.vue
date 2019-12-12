@@ -1,7 +1,7 @@
 <!--
  * @Author: shallwe
  * @Date: 2019-11-08 11:36:42
- * @LastEditTime: 2019-12-11 15:20:51
+ * @LastEditTime: 2019-12-12 16:16:54
  * @LastEditors: shallwe
  -->
 <template>
@@ -39,6 +39,7 @@
                 </p>
                 <hr class="gap" />
                 <section class="wrapper" v-html="blogDetail.text" />
+                <div id="disqus_thread"></div>
             </div>
         </el-col>
         <el-col :xs="0" :sm="8" :md="6" :lg="4" :xl="4">
@@ -116,6 +117,20 @@
             return store.dispatch('getBlogDetails', {
                 blogId: id
             })
+        },
+        mounted() {
+            var disqus_config = function() {
+                this.page.url = 'localhost' // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = this.blogId // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            (function() {
+                // DON'T EDIT BELOW THIS LINE
+                var d = document
+                var s = d.createElement('script')
+                s.src = 'https://supervv.disqus.com/embed.js'
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s)
+            })()
         }
     }
 </script>

@@ -1,7 +1,7 @@
 <!--
  * @Author: shallwe
  * @Date: 2019-11-06 15:17:42
- * @LastEditTime: 2019-12-12 10:00:48
+ * @LastEditTime: 2019-12-12 16:43:29
  * @LastEditors: shallwe
  -->
 <template>
@@ -67,81 +67,79 @@
 </template>
 
 <script>
-    export default {
-        metaInfo() {
-            return {
-                title: '博客列表'
+export default {
+    metaInfo() {
+        return {
+            title: "博客列表"
+        };
+    },
+    data() {
+        return {
+            show: false,
+            listType: "",
+            redirectPrex: "/detail/",
+            pageInfo: {
+                page: 1,
+                pageSize: 10,
+                count: 0
             }
-        },
-        data() {
-            return {
-                show: false,
-                listType: '',
-                redirectPrex: '/detail/',
-                loading: '',
-                pageInfo: {
-                    page: 1,
-                    pageSize: 10,
-                    count: 0
-                }
-            }
-        },
-        computed: {
-            blogList() {
-                return this.$store.state.blogList
-            }
-        },
-        methods: {
-            getBlogList(success, fail) {
-                let { page, pageSize } = this.pageInfo
-                this.loading()
-                this.$store
-                    .dispatch('getBlogLists', {
-                        page,
-                        pageSize
-                    })
-                    .then(res => {
-                        this.loading().close()
-                        if (!res.code) {
-                            let data = res.data
-                            this.pageInfo.count = data.count
-                        }
-                        success && success(res)
-                    })
-                    .catch(err => {
-                        this.loading().close()
-                        fail && fail(err)
-                    })
-            },
-            handleSizeChange(pageSize) {
-                this.pageInfo.pageSize = pageSize
-                this.getBlogList()
-            },
-            handleCurrentChange(page) {
-                this.pageInfo.page = page
-                this.getBlogList()
-            }
-        },
-        created() {
-            this.loading = this.$loading
-            let { type } = this.$route.query
-            try {
-                // 不同类型列表
-                // if (type === 2) {
-
-                // } else if () {
-
-                // } else
-                this.getBlogList(() => {
-                    this.show = true
-                })
-            } catch (error) {}
-        },
-        validate({ params }) {
-            // 必须是number类型
-            return params.type && /^\w+$/.test(params.type)
+        };
+    },
+    computed: {
+        blogList() {
+            return this.$store.state.blogList;
         }
+    },
+    methods: {
+        getBlogList(success, fail) {
+            let { page, pageSize } = this.pageInfo;
+            let loading = this.$loading();
+            this.$store
+                .dispatch("getBlogLists", {
+                    page,
+                    pageSize
+                })
+                .then(res => {
+                    loading && loading.close();
+                    if (!res.code) {
+                        let data = res.data;
+                        this.pageInfo.count = data.count;
+                    }
+                    success && success(res);
+                })
+                .catch(err => {
+                    loading && loading.close();
+                    fail && fail(err);
+                });
+        },
+        handleSizeChange(pageSize) {
+            this.pageInfo.pageSize = pageSize;
+            this.getBlogList();
+        },
+        handleCurrentChange(page) {
+            this.pageInfo.page = page;
+            this.getBlogList();
+        }
+    },
+    created() {
+        // let { type } = this.$route.query
+        try {
+            // 不同类型列表
+            // if (type === 2) {
+
+            // } else if () {
+
+            // } else
+            this.getBlogList(() => {
+                this.show = true;
+            });
+        } catch (error) {}
+    },
+    validate({ params }) {
+        // 必须是number类型
+        return params.type && /^\w+$/.test(params.type);
     }
+};
 </script>
 
 <style lang="less" scoped>
