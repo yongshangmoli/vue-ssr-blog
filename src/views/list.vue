@@ -1,12 +1,12 @@
 <!--
  * @Author: shallwe
  * @Date: 2019-11-06 15:17:42
- * @LastEditTime: 2019-12-11 19:07:02
+ * @LastEditTime: 2019-12-12 10:00:48
  * @LastEditors: shallwe
  -->
 <template>
-    <div v-if="show" class="wrapper">
-        <div style="display: flex;">
+    <div v-if="show">
+        <div class="wrapper" style="display: flex;flex-wrap: wrap;">
             <article
                 v-for="(item, idx) in blogList"
                 :key="idx"
@@ -31,7 +31,9 @@
                             item.classification.label
                         }}</span>
                         <h4 class="content-title">{{ item.title }}</h4>
-                        <div class="content-intro">{{ item.introduction }}</div>
+                        <div class="content-intro">
+                            {{ item.introduction }}
+                        </div>
                         <p class="content-view">
                             {{ item.pageviewsCount || 0 }}浏览
                         </p>
@@ -39,26 +41,28 @@
                 </a>
             </article>
         </div>
-        <el-pagination
-            class="pagination-large"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="pageInfo.page"
-            :page-size="pageInfo.pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="pageInfo.count"
-        >
-        </el-pagination>
-        <el-pagination
-            class="pagination-small"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="pageInfo.page"
-            :page-size="pageInfo.pageSize"
-            layout="prev, pager, next"
-            :total="pageInfo.count"
-        >
-        </el-pagination>
+        <div class="wrapper">
+            <el-pagination
+                class="pagination-large"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="pageInfo.page"
+                :page-size="pageInfo.pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="pageInfo.count"
+            >
+            </el-pagination>
+            <el-pagination
+                class="pagination-small"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="pageInfo.page"
+                :page-size="pageInfo.pageSize"
+                layout="prev, pager, next"
+                :total="pageInfo.count"
+            >
+            </el-pagination>
+        </div>
     </div>
 </template>
 
@@ -146,7 +150,6 @@
     margin: 0 auto;
     padding: 20px 10px;
     position: relative;
-    flex-wrap: wrap;
 }
 .img-wrapper {
     height: 200px;
@@ -242,6 +245,13 @@
             width: 357px;
             flex: unset;
         }
+    }
+    .content-large .content-intro {
+        max-height: 9rem;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 6;
+        overflow: hidden;
     }
     .pagination-large {
         text-align: right;
