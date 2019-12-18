@@ -1,5 +1,6 @@
 const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
 const resolve = pathname => path.resolve(__dirname, '..', pathname)
 
@@ -25,11 +26,13 @@ module.exports = {
             {
                 test: /\.vue$/,
                 loader: 'vue-loader',
-                include: resolve('src')
+                include: resolve('src'),
+                exclude: resolve('node_modules')
             },
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
+                include: resolve('src'),
                 exclude: resolve('node_modules')
             },
             {
@@ -60,6 +63,7 @@ module.exports = {
     },
     plugins: [
         // 自动应用loader到.vue文件对应，如/\.js$/对应script块，/\.css$/对应style块
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+        new CompressionWebpackPlugin()
     ]
 }
