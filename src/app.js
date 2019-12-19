@@ -1,7 +1,7 @@
 /*
  * @Author: shallwe
  * @Date: 2019-12-10 11:19:45
- * @LastEditTime: 2019-12-10 18:03:45
+ * @LastEditTime: 2019-12-19 10:06:56
  * @LastEditors: shallwe
  */
 import Vue from 'vue'
@@ -15,7 +15,7 @@ import {
 import {
     createStore
 } from './store'
-import App from './app.vue'
+import App from './App.vue'
 
 export function createApp() {
     const router = createRouter()
