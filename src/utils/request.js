@@ -1,14 +1,18 @@
 /*
  * @Author: shallwe
  * @Date: 2019-10-27 17:01:56
- * @LastEditTime: 2019-12-10 16:51:18
- * @LastEditors: shallwe
+ * @LastEditTime : 2019-12-24 15:24:09
+ * @LastEditors  : shallwe
  */
 import axios from 'axios'
-import { Message } from 'element-ui'
+import {
+    Message
+} from 'element-ui'
 
+const isPrd = process.env.NODE_ENV === 'production'
 const service = axios.create({
-    baseURL: 'http://localhost:3000/api', // url = base url + request url
+    // baseURL: `http://localhost:3000/${isPrd ? 'manage/' : ''}api`, // url = base url + request url
+    baseURL: isPrd ? 'https://www.supervv.cn/manage/api' : 'http://localhost:3000/api',
     withCredentials: true, // send cookies when cross-domain requests
     timeout: 5000 // request timeout
 })
@@ -16,13 +20,13 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
     config => {
-    // do something before request is sent
+        // do something before request is sent
         // console.log(111, csrfToken, csrfHeader)
         config.headers['fromClient'] = true
         return config
     },
     error => {
-    // do something with request error
+        // do something with request error
         return Promise.reject(error)
     }
 )

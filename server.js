@@ -1,7 +1,9 @@
 const express = require('express')
 const path = require('path')
 const fs = require('fs')
-const { createBundleRenderer } = require('vue-server-renderer')
+const {
+    createBundleRenderer
+} = require('vue-server-renderer')
 const LRU = require('lru-cache')
 
 const app = express()
@@ -73,8 +75,11 @@ const render = (req, res) => {
         if (isProd && asyncInjectAssets && context.files) {
             let asyncCss = []
             context.files.forEach(filename => {
-                const cssAssets = asyncInjectAssets[filename]
-                asyncCss.push(...cssAssets)
+                if (filename && asyncInjectAssets[filename]) {
+                    const cssAssets = asyncInjectAssets[filename]
+                    asyncCss.push(...cssAssets)
+                }
+                // console.log(22222, asyncInjectAssets, filename, context.files)
             })
 
             asyncCss = new Set(asyncCss)

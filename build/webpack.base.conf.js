@@ -1,15 +1,22 @@
+/*
+ * @Author: shallwe
+ * @Date: 2019-12-10 11:19:45
+ * @LastEditTime : 2019-12-24 14:38:22
+ * @LastEditors  : shallwe
+ */
 const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
 const resolve = pathname => path.resolve(__dirname, '..', pathname)
+const prd = process.env.NODE_ENV === 'production'
 
 module.exports = {
     // 设置webpack的上下文目录，使用相对路径时会以此目录为根目录
     context: resolve('.'),
     output: {
         path: resolve('dist'),
-        publicPath: '/'
+        publicPath: prd ? 'https://cdn.supervv.cn/' : '/'
     },
     resolve: {
         extensions: ['.js', '.vue', '.json']
