@@ -1,12 +1,12 @@
 <!--
  * @Author: shallwe
  * @Date: 2019-11-06 15:17:42
- * @LastEditTime : 2020-01-19 09:48:38
+ * @LastEditTime : 2020-01-19 11:12:19
  * @LastEditors  : shallwe
  -->
 <template>
-	<div v-if="show">
-		<div class="wrapper" style="display: flex;flex-wrap: wrap;">
+	<div v-if="show" style="background: #eee;">
+		<div class="wrapper" style="display: flex; flex-wrap: wrap;">
 			<article
 				v-for="(item, idx) in blogList"
 				:key="idx"
@@ -17,11 +17,13 @@
 					:class="{ flex: idx % 6 === 0 }"
 				>
 					<div class="img-wrapper">
-						<img
-							:src="item.cover || 'https://source.unsplash.com/random/600x200'"
-							alt="博客封面图"
+						<div
+							v-img="{
+								url: item.cover || 'https://source.unsplash.com/random/600x200',
+								alt: '博客封面图'
+							}"
 							class="img"
-						/>
+						></div>
 					</div>
 					<div :class="[idx % 6 === 0 ? 'content-large' : 'content']">
 						<span class="content-tag">{{ item.classification.label }}</span>
@@ -50,79 +52,79 @@
 </template>
 
 <script>
-    export default {
-        metaInfo() {
-            return {
-                title: '博客列表'
-            }
-        },
-        data() {
-            return {
-                show: false,
-                listType: '',
-                redirectPrex: '/detail/',
-                pageInfo: {
-                    page: 1,
-                    pageSize: 10,
-                    count: 0
-                }
-            }
-        },
-        computed: {
-            blogList() {
-                return this.$store.state.blogList
-            }
-        },
-        methods: {
-            getBlogList(success, fail) {
-                let { page, pageSize } = this.pageInfo
-                let loading = this.$loading()
-                this.$store
-                    .dispatch('getBlogLists', {
-                        page,
-                        pageSize
-                    })
-                    .then(res => {
-                        loading && loading.close()
-                        if (!res.code) {
-                            let data = res.data
-                            this.pageInfo.count = data.count
-                        }
-                        success && success(res)
-                    })
-                    .catch(err => {
-                        loading && loading.close()
-                        fail && fail(err)
-                    })
-            },
-            handleSizeChange(pageSize) {
-                this.pageInfo.pageSize = pageSize
-                this.getBlogList()
-            },
-            handleCurrentChange(page) {
-                this.pageInfo.page = page
-                this.getBlogList()
-            }
-        },
-        created() {
-            // let { type } = this.$route.query
-            try {
-                // 不同类型列表
-                // if (type === 2) {
+export default {
+	metaInfo() {
+		return {
+			title: '博客列表'
+		}
+	},
+	data() {
+		return {
+			show: false,
+			listType: '',
+			redirectPrex: '/detail/',
+			pageInfo: {
+				page: 1,
+				pageSize: 10,
+				count: 0
+			}
+		}
+	},
+	computed: {
+		blogList() {
+			return this.$store.state.blogList
+		}
+	},
+	methods: {
+		getBlogList(success, fail) {
+			let { page, pageSize } = this.pageInfo
+			let loading = this.$loading()
+			this.$store
+				.dispatch('getBlogLists', {
+					page,
+					pageSize
+				})
+				.then(res => {
+					loading && loading.close()
+					if (!res.code) {
+						let data = res.data
+						this.pageInfo.count = data.count
+					}
+					success && success(res)
+				})
+				.catch(err => {
+					loading && loading.close()
+					fail && fail(err)
+				})
+		},
+		handleSizeChange(pageSize) {
+			this.pageInfo.pageSize = pageSize
+			this.getBlogList()
+		},
+		handleCurrentChange(page) {
+			this.pageInfo.page = page
+			this.getBlogList()
+		}
+	},
+	created() {
+		// let { type } = this.$route.query
+		try {
+			// 不同类型列表
+			// if (type === 2) {
 
-                // } else if () {
+			// } else if () {
 
-                // } else
-                this.getBlogList(() => {
-                    this.show = true
-                })
-            } catch (error) {}
-        },
-        validate({ params }) {
-            // 必须是number类型
-            return params.type && /^\w+$/.test(params.type)
-        }
-    }
+			// } else
+			this.getBlogList(() => {
+				this.show = true
+			})
+		} catch (error) {}
+	},
+	validate({ params }) {
+		// 必须是number类型
+		return params.type && /^\w+$/.test(params.type)
+	}
+}
 </script>
 
 <style lang="less" scoped>

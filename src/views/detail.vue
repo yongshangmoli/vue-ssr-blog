@@ -1,7 +1,7 @@
 <!--
  * @Author: shallwe
  * @Date: 2019-11-08 11:36:42
- * @LastEditTime : 2020-01-17 18:06:58
+ * @LastEditTime : 2020-01-19 10:35:18
  * @LastEditors  : shallwe
  -->
 <template>
@@ -39,7 +39,7 @@
 					简介：{{ blogDetail.introduction }}
 				</p>
 				<hr class="gap" />
-				<section class="wrapper" v-html="blogDetail.text" />
+				<section class="wrapper article-wrapper" v-html="blogDetail.text" />
 				<div id="disqus_thread"></div>
 			</div>
 		</el-col>
@@ -80,65 +80,65 @@
 </template>
 
 <script>
-    const isPrd = process.env.NODE_ENV === 'production'
-    export default {
-        metaInfo() {
-            return {
-                title: this.blogDetail.title,
-                meta: [
-                    {
-                        // set meta
-                        name: 'description',
-                        content: this.blogDetail.introduction
-                    },
-                    {
-                        name: 'keywords',
-                        content: this.blogDetail.label.join(' ')
-                    }
-                ]
-            }
-        },
-        data() {
-            return {
-                comment: [],
-                pageviewsCount: 5,
-                hotArticle: []
-            }
-        },
-        computed: {
-            blogDetail() {
-                return this.$store.state.blogDetail
-            }
-        },
-        validate({ params }) {
-            return params.id && /^\w+$/.test(params.id)
-        },
-        created() {
-            // console.log(222222222, this.blogDetail);
-        },
-        asyncData({ store, route }) {
-            let { id } = route.query
-            return store.dispatch('getBlogDetails', {
-                blogId: id
-            })
-        },
-        mounted() {
-            /* eslint-enable */
-            var disqus_config = function() {
-                window.page.url = isPrd ? 'https://supervv.cn' : 'localhost' // Replace PAGE_URL with your page's canonical URL variable
-                window.page.identifier = this.blogId // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-            }
-            console.log(disqus_config)
-            ;(function() {
-                // DON'T EDIT BELOW THIS LINE
-                var d = document
-                var s = d.createElement('script')
-                s.src = 'https://supervv.disqus.com/embed.js'
-                s.setAttribute('data-timestamp', +new Date())
-                ;(d.head || d.body).appendChild(s)
-            })()
-        }
-    }
+const isPrd = process.env.NODE_ENV === 'production'
+export default {
+	metaInfo() {
+		return {
+			title: this.blogDetail.title,
+			meta: [
+				{
+					// set meta
+					name: 'description',
+					content: this.blogDetail.introduction
+				},
+				{
+					name: 'keywords',
+					content: this.blogDetail.label.join(' ')
+				}
+			]
+		}
+	},
+	data() {
+		return {
+			comment: [],
+			pageviewsCount: 5,
+			hotArticle: []
+		}
+	},
+	computed: {
+		blogDetail() {
+			return this.$store.state.blogDetail
+		}
+	},
+	validate({ params }) {
+		return params.id && /^\w+$/.test(params.id)
+	},
+	created() {
+		// console.log(222222222, this.blogDetail);
+	},
+	asyncData({ store, route }) {
+		let { id } = route.query
+		return store.dispatch('getBlogDetails', {
+			blogId: id
+		})
+	},
+	mounted() {
+		/* eslint-enable */
+		var disqus_config = function() {
+			window.page.url = isPrd ? 'https://supervv.cn' : 'localhost' // Replace PAGE_URL with your page's canonical URL variable
+			window.page.identifier = this.blogId // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+		}
+		console.log(disqus_config)
+		;(function() {
+			// DON'T EDIT BELOW THIS LINE
+			var d = document
+			var s = d.createElement('script')
+			s.src = 'https://supervv.disqus.com/embed.js'
+			s.setAttribute('data-timestamp', +new Date())
+			;(d.head || d.body).appendChild(s)
+		})()
+	}
+}
 </script>
 
 <style lang="less">
@@ -155,10 +155,15 @@ a {
 }
 .container {
 	padding: 1rem;
+	background: #eee;
+	color: #000;
 }
 .wrapper {
 	margin: 1rem 0.4rem;
-	/* background: #fff; */
+}
+.article-wrapper {
+	line-height: 2rem;
+	text-align: justify;
 }
 .no-list {
 	padding: 0.3rem 1rem;
@@ -182,7 +187,6 @@ a {
 		h4 {
 			padding: 0.6rem;
 			border-bottom: 2px solid #14bfff;
-			color: #eee;
 		}
 	}
 	.label-part {
@@ -214,6 +218,7 @@ a {
 }
 .icon-wrapper {
 	color: #b8b8b8;
+	padding-top: 0.8rem;
 	i {
 		margin-right: 0.5rem;
 	}

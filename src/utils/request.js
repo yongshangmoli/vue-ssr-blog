@@ -5,16 +5,16 @@
  * @LastEditors  : shallwe
  */
 import axios from 'axios'
-import {
-    Message
-} from 'element-ui'
+import { Message } from 'element-ui'
 
 const isPrd = process.env.NODE_ENV === 'production'
 const service = axios.create({
     // baseURL: `http://localhost:3000/${isPrd ? 'manage/' : ''}api`, // url = base url + request url
-    baseURL: isPrd ? 'https://www.supervv.cn/manage/api' : 'http://localhost:3000/api',
+    baseURL: isPrd
+        ? 'https://www.supervv.cn/manage/api'
+        : 'http://localhost:3000/api',
     withCredentials: true, // send cookies when cross-domain requests
-    timeout: 5000 // request timeout
+    timeout: 60000 // request timeout
 })
 
 // request interceptor
