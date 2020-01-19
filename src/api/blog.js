@@ -1,7 +1,7 @@
 /*
  * @Author: shallwe
  * @Date: 2019-12-10 16:35:48
- * @LastEditTime : 2020-01-18 21:35:18
+ * @LastEditTime : 2020-01-19 09:45:07
  * @LastEditors  : shallwe
  */
 import request from '../utils/request'
@@ -20,7 +20,6 @@ export function getBlogList(params) {
 export function getBlogDetail(params) {
     return request({
         url: `/blog/get/${params.blogId}`,
-        method: 'get',
-        params
+        method: 'get'
     })
 }
