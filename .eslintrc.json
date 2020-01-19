@@ -1,0 +1,35 @@
+{
+    "root": true,
+    "extends": ["plugin:vue/essential", "standard"],
+    "env": {
+        "browser": true,
+        "node": true,
+        "es6": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "parser": "babel-eslint"
+    },
+    "overrides": [{
+        "files": ["*.vue"],
+        "rules": {
+            "indent": [0]
+        }
+    }],
+    "rules": {
+        "indent": [2, 4],
+        "space-before-function-paren": [0],
+        "vue/script-indent": [
+            2,
+            4,
+            {
+                "baseIndent": 1
+            }
+        ],
+        "no-unused-vars": [1],
+        "camelcase": [0, {
+            "properties": "never"
+        }]
+    }
+}
